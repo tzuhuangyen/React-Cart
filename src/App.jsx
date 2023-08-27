@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import datas from "./componments/datas";
-//import Card from "./componments/Card";
 import Menu from "./componments/Menu";
-// import Order from "./componments/Order";
+import Order from "./componments/Order";
+//import Card from "./componments/Card";
 
 function App() {
   const [drinks] = useState(datas);
@@ -11,57 +11,55 @@ function App() {
   const [description, setDescription] = useState("");
   const [order, setOrder] = useState([]);
 
-  //點擊菜單加入購物車
-  const handleAddToCart = (drink) => {
-    //如果當前購物車沒有此飲料就新增一筆
-    setCart([
-      ...cart,
-      {
-        ...drink,
-        id: new Date().getTime(),
-        quantity: 1,
-        subtotal: drink.price,
-      },
-    ]);
-  };
-
-  //更新購物車
-  //如果當前購物車有此飲料就新增數量並更新價錢
+  //如果當前購物車有此飲料就更新數量
   const handleUpdatedCart = (item, value) => {
     const newCart = cart.map((cartItem) => {
       if (cartItem.id === item.id) {
         return {
           ...cartItem,
           quantity: parseInt(value),
-          subtotal: cartItem.price * parseInt(value),
+          subtotal: cartItem.price * parseInt,
         };
       }
       return cartItem;
     });
     setCart(newCart);
   };
+  //點擊菜單加入購物車
+  const handleAddToCart = (drink) => {
+    const existItem = cart.find((item) => item.id === drink.id);
+    if (existItem) {
+      //如果當前購物車有此飲料就更新數量
+      handleUpdatedCart(existItem, existItem.quantity + 1);
+    } else {
+      //如果當前購物車沒有此飲料就新增一筆
+      setCart([
+        ...cart,
+        {
+          ...drink,
+          id: new Date().getTime(),
+          quantity: 1,
+          subtotal: drink.price,
+        },
+      ]);
+    }
+  };
 
   //更新購物車總價
   useEffect(() => {
     const total = cart.reduce((pre, next) => {
-      return pre + next.price;
+      return pre + next.subtotal;
     }, 0);
     setSum(total);
   }, [cart]);
 
   //刪除購物車項目
-  // const handleRemoveItem = (item) => {
-  //   const updatedCart = [...cart];
-  //   updatedCart.splice(index, 1);
-  //   setCart(updatedCart);
-  // };
-  // const handleRemoveItem = (item) => {
-  //   console.log(item);
-  //   const updateCart = cart.filter((cartItem) => {
-  //     return cartItem.id !== item.id;
-  //   });
-  //   setCart(updateCart);
-  // };
+  const handleRemoveItem = (item) => {
+    const newCart = cart.filter((cartItem) => {
+      return cartItem.id !== item.id;
+    });
+    setCart(newCart);
+  };
 
   //建立訂單
   const createOrder = () => {
@@ -86,10 +84,11 @@ function App() {
                 return (
                   <Menu
                     key={drink.id}
-                    handleAddToCart={handleAddToCart}
                     name={drink.name}
                     price={drink.price}
                     description={drink.description}
+                    handleAddToCart={handleAddToCart}
+                    handleUpdatedCart={handleUpdatedCart}
                   />
                 );
               })}
@@ -112,8 +111,14 @@ function App() {
                 </tr>
               </thead>
               <tbody>
-                {/*handleRemoveItem={handleRemoveItem}*/}
-                {/*<Order item={cart} />*/}
+                {cart.map((item) => {
+                  return (
+                    <tr key={item.id}>
+                      {/*傳入要顯示的參數和函示*/}
+                      <Order item={item} handleRemoveItem={handleRemoveItem} />
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
             <div className="text-end mb-3">

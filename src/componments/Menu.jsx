@@ -15,7 +15,7 @@ const Menu = ({ name, price, description, handleAddToCart }) => {
           <small>${price}</small>
         </div>
         <p className="mb-1">{description}</p>
-        <button></button>
+        {/*<button handleAddToCart={handleAddToCart}>加入購物車</button>*/}
       </a>
     </>
   );
