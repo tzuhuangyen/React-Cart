@@ -6,46 +6,36 @@ import Order from "./componments/Order";
 
 function App() {
   const [drinks] = useState(datas);
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState([]); //加入購物車使用
   const [sum, setSum] = useState(0);
   const [description, setDescription] = useState("");
   const [order, setOrder] = useState([]);
 
   //點擊菜單加入購物車
-  // const handleAddToCart = (drink) => {
-  //   const existItem = cart.find((item) => item.id === drink.id);
-  //   if (existItem) {
-  //     //如果當前購物車有此飲料就更新數量
-  //     handleUpdatedCart(existItem, existItem.quantity + 1);
-  //   } else {
-  //     //如果當前購物車沒有此飲料就新增一筆
-  //     setCart([
-  //       ...cart,
-  //       {
-  //         ...drink,
-  //         id: new Date().getTime(),
-  //         quantity: 1,
-  //         subtotal: drink.price,
-  //       },
-  //     ]);
-  //   }
-  // };
   const handleAddToCart = (drink) => {
-    setCart([
-      ...cart,
-      {
-        ...drink,
-        id: new Date().getTime(),
-        quantity: 1,
-        subtotal: drink.price,
-      },
-    ]);
+    const existItem = cart.find((item) => item.name === drink.name);
+    if (existItem) {
+      //使用name找相同項目 如果當前購物車有此飲料就更新數量
+      handleUpdatedCart(existItem, existItem.quantity + 1);
+      return;
+    } else {
+      //如果當前購物車沒有此飲料就新增一筆
+      setCart([
+        ...cart,
+        {
+          ...drink,
+          id: new Date().getTime(),
+          quantity: 1,
+          subtotal: drink.price,
+        },
+      ]);
+    }
   };
 
   const handleUpdatedCart = (item, value) => {
-    //item更新的购物車項目value 代表更新後的數量。
+    //item更新的购物車項目 value 代表更新後的數量小計。
     const newCart = cart.map((cartItem) => {
-      //當前項目的 id 與傳入的 item 的 id 相同，說明這是要更新的项目
+      //當點擊的項目的 id 與購物車內 item 的 id 相同，說明這是要更新的项目
       if (cartItem.id === item.id) {
         return {
           ...cartItem,
