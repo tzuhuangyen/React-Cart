@@ -1,5 +1,11 @@
 //菜單元件
-const Menu = ({ name, price, description, handleAddToCart }) => {
+const Menu = ({
+  name,
+  price,
+  description,
+  handleAddToCart,
+  handleUpdatedCart,
+}) => {
   return (
     <>
       <a

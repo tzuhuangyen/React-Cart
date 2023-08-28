@@ -1,12 +1,18 @@
 //handleUpdateQuantity, handleRemoveItem
-const Order = ({ item, handleRemoveItem, handleUpdatedCart }) => {
+const Order = ({
+  item,
+  handleRemoveItem,
+  setCart,
+  cart,
+  handleUpdatedCart,
+}) => {
   return (
     <>
       <td>
         <button
           type="button"
           className="btn btn-sm"
-          onClick={() => handleRemoveItem(item)}
+          onClick={(e) => handleRemoveItem(item)}
         >
           x
         </button>
@@ -20,9 +26,7 @@ const Order = ({ item, handleRemoveItem, handleUpdatedCart }) => {
           className="form-select"
           value={item.quantity}
           onChange={(e) => {
-            const value = e.target.value;
-            item.quantity = parseInt(e.target.value);
-            handleUpdatedCart(item, value);
+            handleUpdatedCart(item, e.target.value);
           }}
         >
           {[...Array(10).keys()].map((item) => {
