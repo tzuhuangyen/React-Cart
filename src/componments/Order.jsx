@@ -29,6 +29,8 @@ const Order = ({
             handleUpdatedCart(item, e.target.value);
           }}
         >
+          {/* Array(10)  创建了一个长度为 10 的空数组，它有 10 个元素的位置。 */}
+          {/* .keys() 方法返回该对象包含数组的索引。 */}
           {[...Array(10).keys()].map((item) => {
             return (
               <option value={item + 1} key={item}>

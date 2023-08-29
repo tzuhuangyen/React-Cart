@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import datas from "./componments/datas";
 import Menu from "./componments/Menu";
 import Order from "./componments/Order";
-//import Card from "./componments/Card";
+import Card from "./componments/Card";
 
 function App() {
   const [drinks] = useState(datas);
@@ -31,7 +31,7 @@ function App() {
       ]);
     }
   };
-
+  //更新購物車內容
   const handleUpdatedCart = (item, value) => {
     //item更新的购物車項目 value 代表更新後的數量小計。
     const newCart = cart.map((cartItem) => {
@@ -48,14 +48,13 @@ function App() {
     setCart(newCart);
   };
 
+  //更新購物車總價
   useEffect(() => {
     const total = cart.reduce((pre, next) => {
       return pre + next.subtotal;
     }, 0);
     setSum(total);
   }, [cart]);
-
-  //更新購物車總價
 
   //刪除購物車項目
   const handleRemoveItem = (item) => {
@@ -65,7 +64,7 @@ function App() {
     setCart(newCart);
   };
 
-  //建立訂單
+  //建立/送出訂單
   const createOrder = () => {
     setOrder({
       id: new Date().getTime(),
@@ -114,10 +113,11 @@ function App() {
                   <th scope="col">小計</th>
                 </tr>
               </thead>
-              <tbody>
-                {cart.map((item) => {
-                  return (
-                    <tr key={item.id}>
+
+              {cart.map((item) => {
+                return (
+                  <tbody key={item.id}>
+                    <tr>
                       {/*傳入要顯示的參數和函示*/}
                       <Order
                         item={item}
@@ -127,30 +127,59 @@ function App() {
                         setCart={setCart}
                       />
                     </tr>
-                  );
-                })}
-              </tbody>
+                  </tbody>
+                );
+              })}
             </table>
             <div className="text-end mb-3">
-              <h5>
-                總計: <span>${sum}</span>
-              </h5>
-            </div>
-            <textarea
-              className="form-control mb-3"
-              rows="3"
-              placeholder="備註"
-            ></textarea>
-            <div className="text-end">
-              <button className="btn btn-primary">送出</button>
+              {cart.length === 0 ? (
+                <div className="alert alert-primary text-center" role="alert">
+                  請選擇商品
+                </div>
+              ) : (
+                <>
+                  <div className="text-end mb-3">
+                    <h5>
+                      總計: <span>${sum}</span>
+                    </h5>
+                  </div>
+                  <textarea
+                    className="form-control mb-3"
+                    rows="3"
+                    placeholder="備註"
+                    onChange={(e) => {
+                      setDescription(e.target.value);
+                    }}
+                  ></textarea>
+                  <div className="text-end">
+                    <button
+                      className="btn btn-primary"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        createOrder();
+                      }}
+                    >
+                      送出
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
           </div>
+
           <hr />
-          {/* <div className="row justify-content-center">
+          <div className="row justify-content-center">
             <div className="col-8">
-              <Card />
+              <Card
+                name={name}
+                //quantity={quantity}
+                //subtotal={subtotal}
+                description={description}
+                sum={sum}
+                order={order}
+              />
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
     </>
