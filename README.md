@@ -15,8 +15,7 @@ The key features of the application are as follows:
 
 Overall, this application allows users to browse a menu, add items to a shopping cart, adjust quantities, and submit an order with additional notes. The order summary card provides a clear overview of the selected items and the total price.
 
-Please note that the provided code may still require additional styling and functionality to be fully functional.
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+該應用程序允許用戶瀏覽菜單，將項目添加到購物車，調整數量，並提交帶有附加備註的訂單。訂單摘要卡提供了對所選項目和總價格的清晰概述。
 
 Currently, two official plugins are available:
 
